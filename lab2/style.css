@@ -1,0 +1,33 @@
+#slider {
+	width: 600px;
+	height: 400px;
+	margin: 100px auto 0 auto;
+	overflow: hidden;
+}
+
+#slider .slides {
+	display: flex;
+	transition: all 1s ease-in-out;
+}
+
+.slide1 {
+	transform: none;
+}
+
+.slide2 {
+	transform: translateX(-600px);
+}
+
+.slide3 {
+	transform: translateX(-1200px);
+}
+
+.slide4 {
+	transform: translateX(-1800px);
+}
+.slide5 {
+	transform: translateX(-2400px);
+}
+.slide6 {
+	transform: translateX(-3000px);
+}
