@@ -13,7 +13,7 @@ function updateSlide(prevSlide, currentSlide) {
 	slides.classList.remove(`slide${prevSlide}`);
 	slides.classList.add(`slide${currentSlide}`);
 
-	identifier.textContent = currentSlide + 1;
+	identifier.textContent = currentSlide;
 }
 
 function nextSlide() {
