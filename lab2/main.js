@@ -63,7 +63,7 @@ stopButton.addEventListener('click', () => {
 			slides.classList.remove(`slide${i}`);
 		}
 
-		updateSlide(0, index);
+		updateSlide(0, index + 1);
 		stopCarousel();
 	});
 });
@@ -76,4 +76,8 @@ nextButton.addEventListener('click', () => {
 previousButton.addEventListener('click', () => {
 	stopCarousel();
 	previousSlide();
+});
+
+slides.addEventListener('click', () => {
+	stopCarousel();
 });
