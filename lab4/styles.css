@@ -6,7 +6,7 @@ body {
 	display: grid;
 	grid-template-rows: 3rem auto;
 	grid-template-columns: max-content auto;
-	grid-template-areas: "aside nav" "aside main";
+	grid-template-areas: 'aside nav' 'aside main';
 	width: 100vw;
 	height: 100vh;
 }
@@ -20,9 +20,25 @@ body {
 .note {
 	grid-area: main;
 	background-color: blanchedalmond;
+
+	padding: 1rem;
 }
 
 .nav {
 	grid-area: nav;
 	background-color: beige;
+}
+
+.note__editable {
+	width: 100%;
+	height: 100%;
+	background-color: azure;
+}
+
+.note__editable:focus {
+	outline: none;
+}
+
+.aside__item--focused {
+	background-color: brown;
 }
