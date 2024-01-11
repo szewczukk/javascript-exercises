@@ -1,12 +1,23 @@
-const notesStore = [
-	{ id: crypto.randomUUID(), title: 'Note #1', body: 'Hello from Note #1' },
-	{ id: crypto.randomUUID(), title: 'Note #2', body: 'Hello from Note #2' },
-];
+if (!localStorage.getItem('store')) {
+	localStorage.setItem(
+		'store',
+		JSON.stringify([
+			{ id: crypto.randomUUID(), title: 'Note #1', body: 'Hello from Note #1' },
+			{ id: crypto.randomUUID(), title: 'Note #2', body: 'Hello from Note #2' },
+		]),
+	);
+}
+
+const notesStore = JSON.parse(localStorage.getItem('store'));
 let focusedNote = notesStore[0];
 
 const asideFilter = document.querySelector('#aside__filter');
 const asideList = document.querySelector('.aside__list');
 const noteEditable = document.querySelector('.note__editable');
+
+function saveNotesToLocalStorage() {
+	localStorage.setItem('store', JSON.stringify(notesStore));
+}
 
 function itemOnClick(e) {
 	const items = document.querySelectorAll('.aside__item');
@@ -57,6 +68,7 @@ asideFilter.addEventListener('input', (e) => {
 
 noteEditable.addEventListener('input', (e) => {
 	focusedNote.body = e.target.innerHTML;
+	saveNotesToLocalStorage();
 });
 
 noteEditable.focus();
