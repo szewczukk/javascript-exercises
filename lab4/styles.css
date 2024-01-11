@@ -1,0 +1,28 @@
+body {
+	margin: 0;
+}
+
+.container {
+	display: grid;
+	grid-template-rows: 3rem auto;
+	grid-template-columns: max-content auto;
+	grid-template-areas: "aside nav" "aside main";
+	width: 100vw;
+	height: 100vh;
+}
+
+.aside {
+	grid-area: aside;
+	background-color: aqua;
+	padding: 1rem;
+}
+
+.note {
+	grid-area: main;
+	background-color: blanchedalmond;
+}
+
+.nav {
+	grid-area: nav;
+	background-color: beige;
+}
