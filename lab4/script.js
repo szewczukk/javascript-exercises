@@ -2,8 +2,18 @@ if (!localStorage.getItem('store')) {
 	localStorage.setItem(
 		'store',
 		JSON.stringify([
-			{ id: crypto.randomUUID(), title: 'Note #1', body: 'Hello from Note #1' },
-			{ id: crypto.randomUUID(), title: 'Note #2', body: 'Hello from Note #2' },
+			{
+				id: crypto.randomUUID(),
+				title: 'Note #1',
+				body: 'Hello from Note #1',
+				date: new Date().toString(),
+			},
+			{
+				id: crypto.randomUUID(),
+				title: 'Note #2',
+				body: 'Hello from Note #2',
+				date: new Date().toString(),
+			},
 		]),
 	);
 }
@@ -42,7 +52,7 @@ function updateAsideItems(notes) {
 		item.setAttribute('id', note.id);
 		item.addEventListener('click', itemOnClick);
 
-		item.textContent = note.title;
+		item.textContent = `${note.title} (${new Date(note.date).toDateString()})`;
 
 		if (note === focusedNote) {
 			item.classList.add('aside__item--focused');
