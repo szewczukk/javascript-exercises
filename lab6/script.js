@@ -48,12 +48,19 @@ class Ball {
 /** @type{HTMLCanvasElement} */
 const canvas = document.querySelector('#canvas');
 
+const startButton = document.querySelector('#start');
+const restartButton = document.querySelector('#reset');
+
 const ctx = canvas.getContext('2d');
 
-const balls = [];
+let state = 'paused';
 
-for (let i = 0; i < 50; i++) {
-	balls.push(new Ball(balls));
+let balls = [];
+function restart() {
+	balls = [];
+	for (let i = 0; i < 50; i++) {
+		balls.push(new Ball(balls));
+	}
 }
 
 function draw() {
@@ -63,7 +70,31 @@ function draw() {
 		ball.render(ctx);
 	}
 
-	requestAnimationFrame(draw);
+	if (state === 'running') {
+		requestAnimationFrame(draw);
+	}
 }
 
-requestAnimationFrame(draw);
+restart();
+draw();
+
+startButton.addEventListener('click', function () {
+	if (state === 'running') {
+		state = 'paused';
+		this.textContent = 'Start';
+		return;
+	}
+
+	state = 'running';
+	requestAnimationFrame(draw);
+
+	this.textContent = 'Pause';
+});
+
+restartButton.addEventListener('click', () => {
+	state = 'paused';
+	startButton.textContent = 'Start';
+
+	restart();
+	draw();
+});
