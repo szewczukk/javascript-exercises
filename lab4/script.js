@@ -24,6 +24,7 @@ let focusedNote = notesStore[0];
 const asideFilter = document.querySelector('#aside__filter');
 const asideList = document.querySelector('.aside__list');
 const noteEditable = document.querySelector('.note__editable');
+const noteDetailsDate = document.querySelector('.noteDetails__date');
 
 function saveNotesToLocalStorage() {
 	localStorage.setItem('store', JSON.stringify(notesStore));
@@ -41,6 +42,7 @@ function itemOnClick(e) {
 	focusedNote = notesStore.find((n) => n.id === e.target.getAttribute('id'));
 
 	noteEditable.innerHTML = focusedNote.body;
+	noteDetailsDate.textContent = new Date(focusedNote.date).toLocaleString();
 }
 
 function updateAsideItems(notes) {
@@ -52,7 +54,9 @@ function updateAsideItems(notes) {
 		item.setAttribute('id', note.id);
 		item.addEventListener('click', itemOnClick);
 
-		item.textContent = `${note.title} (${new Date(note.date).toDateString()})`;
+		item.textContent = `${note.title} (${
+			new Date(note.date).toISOString().split('T')[0]
+		})`;
 
 		if (note === focusedNote) {
 			item.classList.add('aside__item--focused');
@@ -66,6 +70,7 @@ function updateAsideItems(notes) {
 
 updateAsideItems(notesStore);
 noteEditable.innerHTML = focusedNote.body;
+noteDetailsDate.textContent = new Date(focusedNote.date).toLocaleString();
 
 asideFilter.addEventListener('input', (e) => {
 	const filter = e.target.value;

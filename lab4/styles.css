@@ -1,3 +1,7 @@
+* {
+	box-sizing: border-box;
+}
+
 body {
 	margin: 0;
 }
@@ -5,8 +9,8 @@ body {
 .container {
 	display: grid;
 	grid-template-rows: 3rem auto;
-	grid-template-columns: max-content auto;
-	grid-template-areas: 'aside nav' 'aside main';
+	grid-template-columns: max-content auto 15rem;
+	grid-template-areas: 'aside nav nav' 'aside main details';
 	width: 100vw;
 	height: 100vh;
 }
@@ -15,6 +19,18 @@ body {
 	grid-area: aside;
 	background-color: aqua;
 	padding: 1rem;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.noteDetails {
+	grid-area: details;
+	padding: 1rem;
+}
+
+.noteDetails__paragraph {
+	margin: 0;
 }
 
 .note {
@@ -33,10 +49,16 @@ body {
 	width: 100%;
 	height: 100%;
 	background-color: azure;
+
+	padding: 0.5rem;
 }
 
 .note__editable:focus {
 	outline: none;
+}
+
+.aside__item {
+	cursor: pointer;
 }
 
 .aside__item--focused {
