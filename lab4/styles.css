@@ -9,7 +9,7 @@ body {
 .container {
 	display: grid;
 	grid-template-rows: 3rem auto;
-	grid-template-columns: max-content auto 15rem;
+	grid-template-columns: 15rem auto 15rem;
 	grid-template-areas: 'aside nav nav' 'aside main details';
 	width: 100vw;
 	height: 100vh;

@@ -25,6 +25,7 @@ const asideFilter = document.querySelector('#aside__filter');
 const asideList = document.querySelector('.aside__list');
 const noteEditable = document.querySelector('.note__editable');
 const noteDetailsDate = document.querySelector('.noteDetails__date');
+const newNoteButton = document.querySelector('#aside__newNote');
 
 function saveNotesToLocalStorage() {
 	localStorage.setItem('store', JSON.stringify(notesStore));
@@ -54,9 +55,7 @@ function updateAsideItems(notes) {
 		item.setAttribute('id', note.id);
 		item.addEventListener('click', itemOnClick);
 
-		item.textContent = `${note.title} (${
-			new Date(note.date).toISOString().split('T')[0]
-		})`;
+		item.textContent = note.title;
 
 		if (note === focusedNote) {
 			item.classList.add('aside__item--focused');
@@ -83,6 +82,18 @@ asideFilter.addEventListener('input', (e) => {
 
 noteEditable.addEventListener('input', (e) => {
 	focusedNote.body = e.target.innerHTML;
+	saveNotesToLocalStorage();
+});
+
+newNoteButton.addEventListener('click', () => {
+	notesStore.push({
+		id: crypto.randomUUID(),
+		title: 'New Note',
+		body: '',
+		date: new Date().toString(),
+	});
+
+	updateAsideItems(notesStore);
 	saveNotesToLocalStorage();
 });
 
