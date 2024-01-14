@@ -73,9 +73,18 @@ noteDetailsDate.textContent = new Date(focusedNote.date).toLocaleString();
 
 asideFilter.addEventListener('input', (e) => {
 	const filter = e.target.value;
-	const filteredNotes = notesStore.filter((note) =>
-		note.title.includes(filter),
-	);
+	const filteredNotes = notesStore.filter((note) => {
+		if (note.title.includes(filter)) {
+			return true;
+		}
+
+		const date = new Date(note.date).toLocaleString();
+		if (date.includes(filter)) {
+			return true;
+		}
+
+		return false;
+	});
 
 	updateAsideItems(filteredNotes);
 });
