@@ -53,7 +53,6 @@ function updateAsideItems(notes) {
 	const items = [];
 
 	const sortedNotes = notes.toSorted((a, b) => {
-		console.log(a.pinned, b.pinned);
 		if (a.pinned) {
 			return -1;
 		}
@@ -64,8 +63,6 @@ function updateAsideItems(notes) {
 
 		return 0;
 	});
-
-	console.log(sortedNotes);
 
 	for (const note of sortedNotes) {
 		const item = document.createElement('li');
@@ -94,10 +91,9 @@ function updateNote() {
 	} else {
 		pinNoteButton.textContent = 'Pin note';
 	}
-}
 
-updateAsideItems(notesStore);
-updateNote();
+	noteEditable.focus();
+}
 
 asideFilter.addEventListener('input', (e) => {
 	const filter = e.target.value;
@@ -108,6 +104,10 @@ asideFilter.addEventListener('input', (e) => {
 
 		const date = new Date(note.date).toLocaleString();
 		if (date.includes(filter)) {
+			return true;
+		}
+
+		if (note.body.includes(filter)) {
 			return true;
 		}
 
@@ -148,8 +148,9 @@ pinNoteButton.addEventListener('click', function () {
 	focusedNote.pinned = !focusedNote.pinned;
 
 	updateAsideItems(notesStore);
-	updateNote();
 	saveNotesToLocalStorage();
+	updateNote();
 });
 
-noteEditable.focus();
+updateAsideItems(notesStore);
+updateNote();
