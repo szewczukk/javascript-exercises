@@ -8,16 +8,16 @@ body {
 
 .container {
 	display: grid;
-	grid-template-rows: 3rem auto;
+	grid-template-rows: auto;
 	grid-template-columns: 15rem auto 15rem;
-	grid-template-areas: 'aside nav nav' 'aside main details';
+	grid-template-areas: 'aside main details';
 	width: 100vw;
 	height: 100vh;
 }
 
 .aside {
 	grid-area: aside;
-	background-color: aqua;
+	background-color: #834a42;
 	padding: 1rem;
 
 	display: flex;
@@ -27,6 +27,9 @@ body {
 .noteDetails {
 	grid-area: details;
 	padding: 1rem;
+
+	background-color: #cdaa7f;
+	color: white;
 }
 
 .noteDetails__paragraph {
@@ -35,32 +38,17 @@ body {
 
 .note {
 	grid-area: main;
-	background-color: blanchedalmond;
 
 	padding: 1rem;
-}
-
-.nav {
-	grid-area: nav;
-	background-color: beige;
-}
-
-.note__editable {
-	width: 100%;
-	height: 100%;
-	background-color: azure;
-
-	padding: 0.5rem;
-}
-
-.note__editable:focus {
+	background-color: #fbfbfb;
 	outline: none;
 }
 
 .aside__item {
 	cursor: pointer;
+	color: white;
 }
 
 .aside__item--focused {
-	background-color: brown;
+	background-color: #cdaa7f;
 }

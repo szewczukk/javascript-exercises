@@ -7,12 +7,14 @@ if (!localStorage.getItem('store')) {
 				title: 'Note #1',
 				body: 'Hello from Note #1',
 				date: new Date().toString(),
+				pinned: false,
 			},
 			{
 				id: crypto.randomUUID(),
 				title: 'Note #2',
 				body: 'Hello from Note #2',
 				date: new Date().toString(),
+				pinned: false,
 			},
 		]),
 	);
@@ -23,10 +25,11 @@ let focusedNote = notesStore[0];
 
 const asideFilter = document.querySelector('#aside__filter');
 const asideList = document.querySelector('.aside__list');
-const noteEditable = document.querySelector('.note__editable');
+const noteEditable = document.querySelector('.note');
 const noteDetailsDate = document.querySelector('.noteDetails__date');
 const newNoteButton = document.querySelector('#aside__newNote');
 const deleteNoteButton = document.querySelector('#noteDetails__delete');
+const pinNoteButton = document.querySelector('#noteDetails__pin');
 
 function saveNotesToLocalStorage() {
 	localStorage.setItem('store', JSON.stringify(notesStore));
@@ -49,7 +52,22 @@ function itemOnClick(e) {
 function updateAsideItems(notes) {
 	const items = [];
 
-	for (const note of notes) {
+	const sortedNotes = notes.toSorted((a, b) => {
+		console.log(a.pinned, b.pinned);
+		if (a.pinned) {
+			return -1;
+		}
+
+		if (b.pinned) {
+			return 1;
+		}
+
+		return 0;
+	});
+
+	console.log(sortedNotes);
+
+	for (const note of sortedNotes) {
 		const item = document.createElement('li');
 		item.classList.add('aside__item');
 		item.setAttribute('id', note.id);
@@ -70,6 +88,12 @@ function updateAsideItems(notes) {
 function updateNote() {
 	noteEditable.innerHTML = focusedNote.body;
 	noteDetailsDate.textContent = new Date(focusedNote.date).toLocaleString();
+
+	if (focusedNote.pinned) {
+		pinNoteButton.textContent = 'Unpin note';
+	} else {
+		pinNoteButton.textContent = 'Pin note';
+	}
 }
 
 updateAsideItems(notesStore);
@@ -104,6 +128,7 @@ newNoteButton.addEventListener('click', () => {
 		title: 'New Note',
 		body: '',
 		date: new Date().toString(),
+		pinned: false,
 	});
 
 	updateAsideItems(notesStore);
@@ -117,6 +142,14 @@ deleteNoteButton.addEventListener('click', () => {
 	updateAsideItems(notesStore);
 	saveNotesToLocalStorage();
 	updateNote();
+});
+
+pinNoteButton.addEventListener('click', function () {
+	focusedNote.pinned = !focusedNote.pinned;
+
+	updateAsideItems(notesStore);
+	updateNote();
+	saveNotesToLocalStorage();
 });
 
 noteEditable.focus();
