@@ -52,19 +52,7 @@ function itemOnClick(e) {
 function updateAsideItems(notes) {
 	const items = [];
 
-	const sortedNotes = notes.toSorted((a, b) => {
-		if (a.pinned) {
-			return -1;
-		}
-
-		if (b.pinned) {
-			return 1;
-		}
-
-		return 0;
-	});
-
-	for (const note of sortedNotes) {
+	for (const note of notes) {
 		const item = document.createElement('li');
 		item.classList.add('aside__item');
 		item.setAttribute('id', note.id);
@@ -146,6 +134,18 @@ deleteNoteButton.addEventListener('click', () => {
 
 pinNoteButton.addEventListener('click', function () {
 	focusedNote.pinned = !focusedNote.pinned;
+
+	notesStore.sort((a, b) => {
+		if (a.pinned) {
+			return -1;
+		}
+
+		if (b.pinned) {
+			return 1;
+		}
+
+		return 0;
+	});
 
 	updateAsideItems(notesStore);
 	saveNotesToLocalStorage();
