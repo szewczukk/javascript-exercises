@@ -9,6 +9,7 @@ if (!localStorage.getItem('store')) {
 				date: new Date().toString(),
 				pinned: false,
 				tags: [],
+				color: 'red',
 			},
 			{
 				id: crypto.randomUUID(),
@@ -17,6 +18,7 @@ if (!localStorage.getItem('store')) {
 				date: new Date().toString(),
 				pinned: false,
 				tags: [],
+				color: 'red',
 			},
 		]),
 	);
@@ -33,6 +35,7 @@ const newNoteButton = document.querySelector('#aside__newNote');
 const deleteNoteButton = document.querySelector('#noteDetails__delete');
 const pinNoteButton = document.querySelector('#noteDetails__pin');
 const noteDetailsTitle = document.querySelector('#noteDetails__title');
+const noteDetailsColor = document.querySelector('#noteDetails__color');
 
 const tagList = document.querySelector('#noteDetails__tags__list');
 const tagInput = document.querySelector('#noteDetails__tags__input');
@@ -81,6 +84,7 @@ function updateAsideItems(notes) {
 function updateNote() {
 	noteDetailsTitle.value = focusedNote.title;
 	noteEditable.innerHTML = focusedNote.body;
+	noteDetailsColor.value = focusedNote.color;
 	noteDetailsDate.textContent = new Date(focusedNote.date).toLocaleString();
 
 	if (focusedNote.pinned) {
@@ -120,6 +124,10 @@ asideFilter.addEventListener('input', (e) => {
 			return true;
 		}
 
+		if (note.color === filter) {
+			return true;
+		}
+
 		return false;
 	});
 
@@ -139,6 +147,7 @@ newNoteButton.addEventListener('click', () => {
 		date: new Date().toString(),
 		pinned: false,
 		tags: [],
+		color: 'red',
 	});
 
 	updateAsideItems(notesStore);
@@ -193,6 +202,12 @@ tagButton.addEventListener('click', () => {
 
 	saveNotesToLocalStorage();
 	updateNote();
+});
+
+noteDetailsColor.addEventListener('change', (e) => {
+	focusedNote.color = e.target.value;
+
+	saveNotesToLocalStorage();
 });
 
 updateAsideItems(notesStore);
