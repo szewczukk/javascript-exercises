@@ -30,6 +30,7 @@ const noteDetailsDate = document.querySelector('.noteDetails__date');
 const newNoteButton = document.querySelector('#aside__newNote');
 const deleteNoteButton = document.querySelector('#noteDetails__delete');
 const pinNoteButton = document.querySelector('#noteDetails__pin');
+const noteDetailsTitle = document.querySelector('#noteDetails__title');
 
 function saveNotesToLocalStorage() {
 	localStorage.setItem('store', JSON.stringify(notesStore));
@@ -47,6 +48,7 @@ function itemOnClick(e) {
 	focusedNote = notesStore.find((n) => n.id === e.target.getAttribute('id'));
 
 	updateNote();
+	noteEditable.focus();
 }
 
 function updateAsideItems(notes) {
@@ -71,6 +73,7 @@ function updateAsideItems(notes) {
 }
 
 function updateNote() {
+	noteDetailsTitle.value = focusedNote.title;
 	noteEditable.innerHTML = focusedNote.body;
 	noteDetailsDate.textContent = new Date(focusedNote.date).toLocaleString();
 
@@ -79,8 +82,6 @@ function updateNote() {
 	} else {
 		pinNoteButton.textContent = 'Pin note';
 	}
-
-	noteEditable.focus();
 }
 
 asideFilter.addEventListener('input', (e) => {
@@ -152,5 +153,14 @@ pinNoteButton.addEventListener('click', function () {
 	updateNote();
 });
 
+noteDetailsTitle.addEventListener('input', (e) => {
+	focusedNote.title = e.target.value;
+
+	updateAsideItems(notesStore);
+	saveNotesToLocalStorage();
+	updateNote();
+});
+
 updateAsideItems(notesStore);
 updateNote();
+noteEditable.focus();
