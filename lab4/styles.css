@@ -52,3 +52,7 @@ body {
 .aside__item--focused {
 	background-color: #cdaa7f;
 }
+
+.noteDetails__todos__list__element--completed {
+	text-decoration: line-through;
+}

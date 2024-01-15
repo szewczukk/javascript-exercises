@@ -10,6 +10,7 @@ if (!localStorage.getItem('store')) {
 				pinned: false,
 				tags: [],
 				color: 'red',
+				todos: [],
 			},
 			{
 				id: crypto.randomUUID(),
@@ -19,6 +20,7 @@ if (!localStorage.getItem('store')) {
 				pinned: false,
 				tags: [],
 				color: 'red',
+				todos: [],
 			},
 		]),
 	);
@@ -40,6 +42,10 @@ const noteDetailsColor = document.querySelector('#noteDetails__color');
 const tagList = document.querySelector('#noteDetails__tags__list');
 const tagInput = document.querySelector('#noteDetails__tags__input');
 const tagButton = document.querySelector('#noteDetails__tags__button');
+
+const todoList = document.querySelector('#noteDetails__todos__list');
+const todoInput = document.querySelector('#noteDetails__todos__input');
+const todoButton = document.querySelector('#noteDetails__todos__button');
 
 function saveNotesToLocalStorage() {
 	localStorage.setItem('store', JSON.stringify(notesStore));
@@ -101,7 +107,51 @@ function updateNote() {
 		tags.push(element);
 	}
 
+	const todos = [];
+
+	const sortedTodos = focusedNote.todos.sort((a, b) => {
+		if (a.completed) {
+			return -1;
+		}
+
+		if (b.completed) {
+			return 1;
+		}
+
+		return 0;
+	});
+
+	for (const todo of sortedTodos) {
+		const element = document.createElement('li');
+		element.textContent = todo.title;
+
+		if (todo.completed) {
+			element.classList.add('noteDetails__todos__list__element--completed');
+		}
+
+		const todoButton = document.createElement('button');
+
+		if (todo.completed) {
+			todoButton.textContent = 'Redo';
+		} else {
+			todoButton.textContent = 'Complete';
+		}
+
+		todoButton.addEventListener('click', function () {
+			const t = focusedNote.todos.find((t) => t.id === todo.id);
+
+			t.completed = !t.completed;
+
+			updateNote();
+		});
+
+		element.appendChild(todoButton);
+
+		todos.push(element);
+	}
+
 	tagList.replaceChildren(...tags);
+	todoList.replaceChildren(...todos);
 }
 
 asideFilter.addEventListener('input', (e) => {
@@ -148,6 +198,7 @@ newNoteButton.addEventListener('click', () => {
 		pinned: false,
 		tags: [],
 		color: 'red',
+		todos: [],
 	});
 
 	updateAsideItems(notesStore);
@@ -207,6 +258,21 @@ tagButton.addEventListener('click', () => {
 noteDetailsColor.addEventListener('change', (e) => {
 	focusedNote.color = e.target.value;
 
+	saveNotesToLocalStorage();
+});
+
+todoButton.addEventListener('click', () => {
+	const todoTitle = todoInput.value;
+
+	focusedNote.todos.push({
+		id: crypto.randomUUID(),
+		title: todoTitle,
+		completed: false,
+	});
+
+	todoTitle.value = '';
+
+	updateNote();
 	saveNotesToLocalStorage();
 });
 
