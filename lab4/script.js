@@ -8,6 +8,7 @@ if (!localStorage.getItem('store')) {
 				body: 'Hello from Note #1',
 				date: new Date().toString(),
 				pinned: false,
+				tags: [],
 			},
 			{
 				id: crypto.randomUUID(),
@@ -15,6 +16,7 @@ if (!localStorage.getItem('store')) {
 				body: 'Hello from Note #2',
 				date: new Date().toString(),
 				pinned: false,
+				tags: [],
 			},
 		]),
 	);
@@ -31,6 +33,10 @@ const newNoteButton = document.querySelector('#aside__newNote');
 const deleteNoteButton = document.querySelector('#noteDetails__delete');
 const pinNoteButton = document.querySelector('#noteDetails__pin');
 const noteDetailsTitle = document.querySelector('#noteDetails__title');
+
+const tagList = document.querySelector('#noteDetails__tags__list');
+const tagInput = document.querySelector('#noteDetails__tags__input');
+const tagButton = document.querySelector('#noteDetails__tags__button');
 
 function saveNotesToLocalStorage() {
 	localStorage.setItem('store', JSON.stringify(notesStore));
@@ -82,6 +88,16 @@ function updateNote() {
 	} else {
 		pinNoteButton.textContent = 'Pin note';
 	}
+
+	const tags = [];
+	for (const tag of focusedNote.tags) {
+		const element = document.createElement('li');
+		element.textContent = tag;
+
+		tags.push(element);
+	}
+
+	tagList.replaceChildren(...tags);
 }
 
 asideFilter.addEventListener('input', (e) => {
@@ -97,6 +113,10 @@ asideFilter.addEventListener('input', (e) => {
 		}
 
 		if (note.body.includes(filter)) {
+			return true;
+		}
+
+		if (note.tags.includes(filter)) {
 			return true;
 		}
 
@@ -118,6 +138,7 @@ newNoteButton.addEventListener('click', () => {
 		body: '',
 		date: new Date().toString(),
 		pinned: false,
+		tags: [],
 	});
 
 	updateAsideItems(notesStore);
@@ -157,6 +178,19 @@ noteDetailsTitle.addEventListener('input', (e) => {
 	focusedNote.title = e.target.value;
 
 	updateAsideItems(notesStore);
+	saveNotesToLocalStorage();
+	updateNote();
+});
+
+tagButton.addEventListener('click', () => {
+	const tag = tagInput.value;
+	if (!tag.length) {
+		return;
+	}
+
+	focusedNote.tags.push(`#${tag}`);
+	tagInput.value = '';
+
 	saveNotesToLocalStorage();
 	updateNote();
 });
