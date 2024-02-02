@@ -1,0 +1,10 @@
+.city {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+}
+
+main {
+	width: 960px;
+	margin: 0 auto;
+}
